@@ -1,10 +1,12 @@
 import React from 'react'
-import {Link, Route} from 'react-router-dom'
+import { Link, Route, Switch } from 'react-router-dom'
+import DelayLink from  '../etc/DelayLink.jsx'
 
 //pages
 import Admin from '../components/Admin.jsx'
 import Genre from '../components/Genre.jsx'
 import Home from '../components/Home.jsx'
+import Page404 from '../components/Page404.jsx'
 
 
 
@@ -17,54 +19,25 @@ class App extends React.Component{
 		}
 	}
 
-	componentDidMount(){
-		window.addEventListener('hashchange', () => {
-			this.setState({
-				route: window.location.hash.substr(1)
-			})
-		})
-	}
-
-
 	render(){
-		let Child
-
-		switch (this.state.route) {
-			case '/admin': 
-				Child = Admin
-				break;
-
-			case '/genre':
-				Child = Genre
-				break;
-
-			default:
-				Child = Home
-				break;
-		}
-
-
 		return(
-			<div className='container'>
-				<h1>App</h1>
+			<div> 
+				<h1>App.jsx</h1>
 				<ul>
-					<li><a href="#/admin">Admin</a></li>
-					<li><a href="#/genre">Genre</a></li>
+					<li><DelayLink to="/">Home</DelayLink></li>
+					<li><DelayLink to="/admin" delay="2000">Admin</DelayLink></li>
+					<li><Link to="/genre">Genre</Link></li>
 				</ul>
 
-				<Child />
+				<Switch>
+					<Route exact path='/' component={Home} />
+					<Route path='/admin' component={Admin} />
+					<Route path='/genre' component={Genre} />
+					<Route path='*' component={Page404} />
+				 </Switch>
 			</div>
 		)
 	}
 }
-
-
-
-
-
-
-
-
-
 
 export default App

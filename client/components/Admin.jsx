@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Admin extends React.Component{
+class Admin extends React.Component{
 	render(){
 		return (
 			<div>
@@ -10,3 +10,5 @@ export default class Admin extends React.Component{
 		)
 	}
 }
+
+export default Admin
