@@ -32,7 +32,7 @@ class ReleaseList extends React.Component{
 					genreReleases.map((release,i) => {
 						var linkName = release.artist.split(' ').join('_') + '-' + release.track.split(' ').join('_')
 						var link = `${url}/${linkName}`
-						return (<li key={i}> <DelayLink to={link}> {release.artist} : {release.track} </DelayLink> </li>)
+						return (<li key={i}> <DelayLink to={link} delay="1000"> {release.artist} : {release.track} </DelayLink> </li>)
 					})
 				}
 				</ul>

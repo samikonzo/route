@@ -1,7 +1,27 @@
 const express = require('express')
 const app = express()
+const RELEASES = require('./serverStore/releases.js')
 const l = console.log
-const releases = require('./serverStore/releases.js')
+
+const db = require('./databaseUtils.js')
+
+db.connectToDatabase()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.use((req, res, next) => {
@@ -17,7 +37,7 @@ app.all('/release/:releaseName', (req, res, next) => {
 	var releaseName = req.params.releaseName
 	var artist = releaseName.split('-')[0].trim()
 	var track = releaseName.split('-')[1].trim()
-	var artistReleases = releases[artist]
+	var artistReleases = RELEASES[artist]
 	var release 
 
 	l('get release : ', releaseName)

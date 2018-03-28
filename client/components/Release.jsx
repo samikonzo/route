@@ -16,35 +16,48 @@ class Release extends React.Component{
 			error : null,
 			imgSrc : null,
 			isLoading: false,
+			visible: false,
 		}
 
 		this._handleStateChangeEvent = this._handleStateChangeEvent.bind(this)
 		this._handleReleaseChangeEvent = this._handleReleaseChangeEvent.bind(this)
+		this._showContent = this._showContent.bind(this)
+		this._hideContent = this._hideContent.bind(this)
+
 	}
 
 	componentDidMount(){
 		AppStore.addChangeListener(this._handleStateChangeEvent)
 		AppStore.addReleaseChangeListener(this._handleReleaseChangeEvent)
 		AppActions.getRelease(this.state.releaseName)
+
+		setTimeout(() => {this._showContent()}, 100)
 	}
 
 	componentWillUnmount(){
 		AppStore.removeChangeListener(this._handleStateChangeEvent)
 		AppStore.removeReleaseChangeListener(this._handleReleaseChangeEvent)
 	}
+	
+	componentWillReceiveProps(nextProps){
+		let releaseName = nextProps.match.params.release.split('-').join(' - ').split('_').join(' ')
+		
+		this.setState({
+			releaseName : releaseName
+		}, AppActions.getRelease(releaseName))
+	}
 
 
 	_handleStateChangeEvent(){
+		var isLoading = AppStore.isLoading()
+
 		this.setState({
-			isLoading : AppStore.isLoading()
+			isLoading : isLoading
 		})
 	}
 
 	_handleReleaseChangeEvent(){
 		var release = AppStore.getRelease()
-		var defError = 'something wrong'
-
-		l(release)
 
 		if(!release){
 			var error = AppStore.getError() || defError
@@ -60,10 +73,19 @@ class Release extends React.Component{
 			release : release,
 			description : release.description,
 			imgSrc : release.img,
+		}, this._showContent)
+	}
+
+	_showContent(){
+		this.setState({
+			visible : 1
 		})
+	}
 
-
-
+	_hideContent(){
+		this.setState({
+			visible : 0
+		})
 	}
 
 	render(){
@@ -74,9 +96,13 @@ class Release extends React.Component{
 			img = (<img src={this.state.imgSrc}/>) 
 		}
 
+		var wrapperStyle = {
+			transition: '1s',
+			opacity: this.state.visible ? 1 : 0,
+		}
 
 		return(
-			<div> 
+			<div ref={elem => this.elem = elem} style={wrapperStyle} className="bebebe"> 
 				<h1> {this.state.releaseName} </h1>
 					{img}
 				<p>	{ descriptionText } </p>

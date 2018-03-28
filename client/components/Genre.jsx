@@ -23,11 +23,10 @@ class Genre extends React.Component{
 							<div> choose genre </div>
 						)
 					}} />
-					<Route exact path={path + '/:genre'} component={GenreChooser}/>
-
-					<Route path={path + '/:genre/:release'} component={Release}/>
-			
+					<Route path={path + '/:genre'} component={GenreChooser}/>
 				</Switch>
+
+				<Route path={path + '/:genre/:release'} component={Release}/>
 			</div>
 		)
 	}
