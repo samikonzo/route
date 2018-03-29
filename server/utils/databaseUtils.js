@@ -5,7 +5,7 @@ function tryConnectToDatabase(){
 	return mongoose.connect(`mongodb://localhost/reactRouterLearn`)
 }
 
-module.exports = {
+const db = {
 	connectToDatabase(){
 		tryConnectToDatabase()
 			.then( 
@@ -14,10 +14,10 @@ module.exports = {
 				},
 				err => {
 					l('error connect to database')
-					setTimeout(connectToDatabase, 1000)
+					setTimeout(db.connectToDatabase, 1000)
 				}
 			)
-	},
-
-	
+	}
 }
+
+module.exports = db

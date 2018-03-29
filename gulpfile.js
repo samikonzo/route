@@ -1,46 +1,38 @@
 const gulp = require('gulp')
 const exec = require('child_process').exec
+const l = console.log
+
+const MONGO_PATH = 'D:/workspace/mongodb/bin/'
+
 
 function runCommand(command) {
-  return function (cb) {
+  return function (cb, errHandler) {
     exec(command, function (err, stdout, stderr) {
-      	console.log(stdout);
-      	console.log(stderr);
+        l('command : ', command)
+        l('stdout : ', stdout);
+        l('stderr : ', stderr);
 
       	if (err !== null) {
-      		console.log('exec error: ' + err);
-    	}
+      		l('exec error: ' + err);
+          if(errHandler) errHandler()
+    	  }
+
+        if (cb) cb()
     });
   }
 }
 
-/*gulp.task('start-mongo', runCommand('mongod'))
-gulp.task('default', 'start-mongo')*/
 
-var mongodRun = 'D:/workspace/mongodb/bin/mongod -f D:/workspace/mongodb/bin/mongod.conf'
-//var mongodRun = 'D:/workspace/mongodb/bin/mongod --help'
+var mongodStartPath = `${MONGO_PATH}mongod -f ${MONGO_PATH}mongod.conf`
+var mongoPath = MONGO_PATH + 'mongo'
+var mongodStopPath = mongoPath + ` --eval "db.getSiblingDB('admin').shutdownServer()"`
 
-gulp.task('stop-mongo', runCommand('mongo --eval "use admin; db.shutdownServer();"'));
 
-gulp.task('default', () => { 
-    runCommand(mongodRun)
-    setTimeout(() => {
-      runCommand('D:/workspace/mongodb/bin/mongo --eval "use admin; db.shutdownServer();"')
-    }, 2000)
-})
+gulp.task('mongodStart', runCommand(mongodStartPath))
+gulp.task('mongodStop', runCommand(mongodStopPath))
+
+gulp.task('default', ['mongodStart'])
 
 
 
 
-
-
-/*gulp.task('default', () => {
-	var l = console.log;
-	l('bebebe')
-
-	exec('ping localhost', function(err, stdout, stderr){
-		l(stdout)
-		l(stderr)
-
-	})
-})*/

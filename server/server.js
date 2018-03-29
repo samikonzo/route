@@ -1,25 +1,34 @@
+global.l = console.log
+
+
 const express = require('express')
 const app = express()
-const RELEASES = require('./serverStore/releases.js')
-const l = console.log
+const session = require('express-session')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 
-const db = require('./databaseUtils.js')
 
+
+const db = require('./utils/databaseUtils.js')
 db.connectToDatabase()
 
 
+const RELEASES = require('./serverStore/releases.js')
 
 
 
+app.use(session({
+	secret : 'keyboard cat',
+	resave : false,
+	saveUnitialized: false,
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
-
-
-
-
-
-
-
-
+var User = require('./models/user')
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 
 
@@ -32,7 +41,7 @@ app.use((req, res, next) => {
 
 app.use(express.static(__dirname+'/public'))
 
-
+// get release
 app.all('/release/:releaseName', (req, res, next) => {
 	var releaseName = req.params.releaseName
 	var artist = releaseName.split('-')[0].trim()
