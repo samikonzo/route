@@ -28,12 +28,17 @@ module.exports = {
 	devServer : {
 		contentBase 		: __dirname + "/public",
 		watchContentBase	: true,
-		proxy: {
+		proxy : {
+			'*' : {
+				target: 'http://localhost:3000'
+			}
+		}
+		/*proxy: {
 			'/api' : {
 				target: 'http://localhost:3000',
 				pathRewrite: {"^/api" : ""}
 			}
 		},
-		historyApiFallback	: true,
+		historyApiFallback	: true,*/
 	}
 }

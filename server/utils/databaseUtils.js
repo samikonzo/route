@@ -7,16 +7,21 @@ function tryConnectToDatabase(){
 
 const db = {
 	connectToDatabase(){
-		tryConnectToDatabase()
-			.then( 
-				resolve => {
-					l('connected to database')
-				},
-				err => {
-					l('error connect to database')
-					setTimeout(db.connectToDatabase, 1000)
-				}
-			)
+		return new Promise( connected => {
+			tryConnectToDatabase()
+				.then( 
+					resolve => {
+						l('connected to database')
+						connected()
+					},
+					err => {
+						l('error connect to database')
+						setTimeout(db.connectToDatabase, 1000)
+					}
+				)
+			
+		})
+
 	}
 }
 
