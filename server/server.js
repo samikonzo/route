@@ -45,7 +45,7 @@ app.use('/', route)
 
 app.use((req, res, next) => {
 	l(req.method, req.url)
-	l(req.isAuthenticated())
+	l('isAuthenticated : ', req.isAuthenticated())
 	l(' ')
 	next()
 })
@@ -79,6 +79,8 @@ app.all('/release/:releaseName', (req, res, next) => {
 	}
 
 	res.send(release)
+
+	l(release)
 
 	function send404Error(){
 		res.status(404).send('Not found')

@@ -27,9 +27,9 @@ class Release extends React.Component{
 	}
 
 	componentDidMount(){
-		AppStore.addChangeListener(this._handleStateChangeEvent)
-		AppStore.addReleaseChangeListener(this._handleReleaseChangeEvent)
-		AppActions.getRelease(this.state.releaseName)
+		//AppStore.addChangeListener(this._handleStateChangeEvent)
+		//AppStore.addReleaseChangeListener(this._handleReleaseChangeEvent)
+		//AppActions.getRelease(this.state.releaseName)
 
 		setTimeout(() => {this._showContent()}, 100)
 	}

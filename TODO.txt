@@ -1,2 +1,1 @@
-auto req for current session from app
-if isAuth => hide login/register
+login/logout to the AppActions

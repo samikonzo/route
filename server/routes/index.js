@@ -19,6 +19,13 @@ router.get('/login', auth.login)
 // route for login action
 router.post('/login', auth.doLogin)
 
+// route for loginStatus
+router.get('/loginStatus', (req, res) => {
+	var status = req.isAuthenticated()
+	l('status : ', status)
+	res.send(status)
+})
+
 // route for logout action
 router.get('/logout', auth.logout)
 

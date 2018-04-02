@@ -53,9 +53,7 @@ userController.login = (req, res) => {
 userController.doLogin = (req, res) => {
 	l('doLogin')
 	l(req.body)
-
-	
-	passport.authenticate('local')(req, res, function(err, user, info){
+	/*passport.authenticate('local')(req, res, function(err, user, info){
 		l('AUTH : ')
 		l('err : ', err)
 		l('user : ', user)
@@ -65,13 +63,29 @@ userController.doLogin = (req, res) => {
 			res.redirect('/')
 			return
 		}
-		res.redirect('/')
+		//res.redirect('/')
 	})
-	
+*/
+	//res.redirect('/')
+
+
+	/*passport.authenticate('local', {failureRedirect: '/bebebe'})(req, res, function(err){
+		l('bebebe')
+	})*/
+
+
+	passport.authenticate('local', {successRedirect: '/', failureRedirect: '/'})(req, res, function success(err){
+		l('login success')
+		//res.send('success')
+		//res.redirect('/')
+	})
+
+	//res.redirect('/badlogin')
 }
 
 // logout
 userController.logout = (req, res) => {
+	l('logout func')
 	req.logout()
 	res.redirect('/')
 }

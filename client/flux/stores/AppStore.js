@@ -7,6 +7,7 @@ const State = {
 	loading : false,
 	release : null,
 	error : null,
+	login : false,
 }
 
 const Events = {
@@ -18,6 +19,32 @@ const Events = {
 Dispatcher.register( function(action){
 	switch(action.type){
 
+		// login
+		case Constants.CHECK_LOGIN : {
+			State.loading = true
+			AppStore.emitChange()
+			break;
+		}
+
+		case Constants.CHECK_LOGIN_SUCCESS : {
+			var result = action.result.data
+			State.login = result
+			State.loading = false
+			AppStore.emitChange()
+			break;
+		}
+		case Constants.CHECK_LOGIN_FAIL : {
+			State.error = action.error
+			State.loading = false
+
+					l('CHECK_LOGIN_FAIL error : ')
+
+			AppStore.emitChange()
+			break;
+		}
+
+
+		// release request
 		case Constants.GET_RELEASE_REQUEST : {
 			State.loading = true
 			AppStore.emitChange()
@@ -86,6 +113,10 @@ const AppStore = Object.assign({}, EventEmitter.prototype,{
 
 	getError(){
 		return State.error
+	},
+
+	isLogined(){
+		return State.login
 	},
 })
 
